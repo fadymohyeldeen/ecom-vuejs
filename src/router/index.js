@@ -10,6 +10,12 @@ const routes = [
     name: "home",
     component: HomeView,
   },
+  {
+    path: "/products",
+    name: "products",
+    // component: ProductList eager loading: loads the component immediately
+    component: () => import("../views/ProductList.vue"), // lazy loading: loads the component when the route is accessed only.
+  },
 ];
 
 const router = new VueRouter({

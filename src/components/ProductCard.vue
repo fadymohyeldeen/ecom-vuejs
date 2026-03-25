@@ -4,15 +4,15 @@
   >
     <div class="bg-[#f9f9f9] flex items-center justify-center p-6 h-[200px]">
       <img
-        :src="product.image"
+        :src="product.images[0]"
         :alt="product.title"
-        class="max-h-full max-w-full object-contain"
+        class="max-h-full max-w-full object-contain rounded-lg"
       />
     </div>
     <div class="p-4 flex flex-col flex-1 gap-2">
       <span
         class="text-[0.72rem] font-semibold text-primary uppercase tracking-[0.5px]"
-        >{{ product.category }}</span
+        >{{ product.category.name }}</span
       >
       <h3
         class="text-[0.9rem] font-semibold text-[#111111] leading-[1.4] line-clamp-2 flex-1"

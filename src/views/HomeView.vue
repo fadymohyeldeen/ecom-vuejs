@@ -57,7 +57,7 @@ export default {
     };
   },
   async created() {
-    const { data } = await api.get("/products?limit=6");
+    const { data } = await api.get("/products?limit=6&offset=0");
     this.products = data;
   },
 };

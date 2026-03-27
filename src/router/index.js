@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
@@ -13,8 +13,12 @@ const routes = [
   {
     path: "/products",
     name: "products",
-    // component: ProductList eager loading: loads the component immediately
-    component: () => import("../views/ProductList.vue"), // lazy loading: loads the component when the route is accessed only.
+    component: () => import("../views/ProductList.vue"),
+  },
+  {
+    path: "/products/:id",
+    name: "single-product",
+    component: () => import("../views/SingleProduct.vue"),
   },
 ];
 
@@ -25,3 +29,9 @@ const router = new VueRouter({
 });
 
 export default router;
+
+/*
+Notes:
+- component: ProductList .. eager loading: loads the component immediately
+- component: () => import("../views/ProductList.vue") .. lazy loading: loads the component when the route is accessed only.
+*/

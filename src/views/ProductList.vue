@@ -89,7 +89,7 @@
         </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
           <ProductCard v-for="p in products" :key="p.id" :product="p" />
         </div>
 
@@ -115,7 +115,6 @@
 </template>
 
 <script>
-import api from "@/services/api";
 import ProductCard from "@/components/ProductCard.vue";
 
 export default {
@@ -126,21 +125,28 @@ export default {
   data() {
     return {
       limit: 10,
-      products: [],
-      categories: [],
     };
   },
+  computed: {
+    products() {
+      return this.$store.state.products;
+    },
+    categories() {
+      return this.$store.state.categories;
+    },
+  },
   async created() {
-    const { data } = await api.get(`/products?limit=${this.limit}`);
-    this.products = data;
-    const { data: categories } = await api.get("/products/categories");
-    this.categories = categories;
+    try {
+      await this.$store.dispatch("fetchProducts", this.limit);
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
     async loadMore() {
       this.limit += 5;
-      const { data } = await api.get(`/products?limit=${this.limit}`);
-      this.products = data;
+      await this.$store.dispatch("fetchProducts", this.limit);
+      // dispatch is how we call actions from a component outside the store.
     },
   },
 };

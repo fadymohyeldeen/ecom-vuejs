@@ -53,5 +53,8 @@ export default {
       showAnnouncement: true,
     };
   },
+  async created() {
+    await this.$store.dispatch("fetchCategories"); // categories are same in all pages, fetched here so it won't re-fetch every time user visits a different page.
+  },
 };
 </script>

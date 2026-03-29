@@ -3,10 +3,12 @@
     <!-- Hero Section -->
     <section class="relative bg-[#F2F0F1] overflow-hidden">
       <div
-        class="max-w-[1440px] mx-auto px-6 md:px-12 pt-10 lg:py-10 flex flex-col lg:flex-row items-center"
+        class="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center"
       >
         <!-- Text content -->
-        <div class="flex-1 max-w-2xl z-10 lg:pr-10 mb-10 lg:mb-20">
+        <div
+          class="order-last lg:order-first flex-1 px-6 md:px-12 py-10 lg:py-20 lg:pr-16"
+        >
           <h1
             class="text-[40px] md:text-6xl lg:text-[64px] font-extrabold text-black leading-[1.05] tracking-tighter mb-6 uppercase"
           >
@@ -27,15 +29,21 @@
           </router-link>
 
           <!-- Stats -->
-          <div class="flex flex-wrap items-center gap-6 md:gap-8">
-            <div>
+          <div
+            class="flex flex-wrap items-start justify-between gap-6 md:gap-0 w-full px-2"
+          >
+            <div class="flex flex-col items-start">
               <h3 class="text-3xl md:text-[40px] font-bold text-black mb-1">
                 200+
               </h3>
               <p class="text-xs text-gray-500 font-medium">Trusted Brands</p>
             </div>
-            <div class="hidden md:block w-px h-12 bg-gray-300"></div>
-            <div>
+
+            <div
+              class="hidden md:block w-px h-12 bg-gray-300 self-center"
+            ></div>
+
+            <div class="flex flex-col items-start">
               <h3 class="text-3xl md:text-[40px] font-bold text-black mb-1">
                 5,000+
               </h3>
@@ -43,8 +51,12 @@
                 Products Available
               </p>
             </div>
-            <div class="hidden md:block w-px h-12 bg-gray-300"></div>
-            <div class="w-full md:w-auto mt-2 md:mt-0">
+
+            <div
+              class="hidden md:block w-px h-12 bg-gray-300 self-center"
+            ></div>
+
+            <div class="flex flex-col items-start">
               <h3 class="text-3xl md:text-[40px] font-bold text-black mb-1">
                 50,000+
               </h3>
@@ -54,13 +66,11 @@
         </div>
 
         <!-- Image content -->
-        <div
-          class="flex-1 w-full lg:h-[600px] relative mt-4 lg:mt-0 flex justify-center lg:justify-end"
-        >
+        <div class="order-first lg:order-last w-full lg:w-1/2 lg:h-[600px]">
           <img
             src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/bca6b0216037191.677940cf76f26.jpg"
             alt="Ecommerce products"
-            class="w-full max-w-sm lg:max-w-none h-full object-cover object-top mix-blend-multiply rounded-md"
+            class="w-full h-64 sm:h-80 lg:h-full object-cover object-top mix-blend-multiply"
           />
         </div>
       </div>
@@ -72,11 +82,11 @@
         class="max-w-[1440px] mx-auto px-6 md:px-12 flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-10"
       >
         <h3
-          v-for="(category, index) in categories.slice(0, 5)"
+          v-for="(c, index) in categories"
           :key="index"
           class="text-white font-serif text-2xl lg:text-4xl font-bold capitalize"
         >
-          {{ category }}
+          {{ c }}
         </h3>
       </div>
     </section>
@@ -134,7 +144,6 @@
 </template>
 
 <script>
-import api from "@/services/api";
 import ProductCard from "@/components/ProductCard.vue";
 
 export default {
@@ -144,16 +153,24 @@ export default {
   },
   data() {
     return {
-      products: [],
-      categories: [],
+      limit: 8,
     };
   },
-  async created() {
-    const { data } = await api.get("/products?limit=8");
-    this.products = data;
-
-    const { data: categories } = await api.get("/products/categories");
-    this.categories = categories;
+  computed: {
+    products() {
+      return this.$store.state.products;
+    },
+    categories() {
+      return this.$store.state.categories;
+    },
   },
+  async created() {
+    try {
+      await this.$store.dispatch("fetchProducts", this.limit);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  methods: {},
 };
 </script>

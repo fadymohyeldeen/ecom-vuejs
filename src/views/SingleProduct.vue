@@ -85,13 +85,6 @@
             <span class="text-3xl font-bold text-black"
               >${{ product.price }}</span
             >
-            <span class="text-3xl font-bold text-gray-300 line-through"
-              >${{ Math.round(product.price * 1.3) }}</span
-            >
-            <span
-              class="text-xs font-bold text-[#FF3333] bg-[#FF3333]/10 px-3 py-1 rounded-full"
-              >-30%</span
-            >
           </div>
 
           <div class="w-full h-px bg-gray-100 mb-6"></div>
@@ -129,10 +122,12 @@
           <div class="w-full h-px bg-gray-100 mb-6"></div>
 
           <!-- Quantity & Actions -->
-          <div class="flex items-center gap-4 mb-4">
+          <div
+            class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-4"
+          >
             <!-- Quantity -->
             <div
-              class="flex items-center border border-gray-200 rounded-full overflow-hidden"
+              class="flex items-center justify-center border border-gray-200 rounded-full overflow-hidden"
             >
               <button
                 @click="decreaseQty"

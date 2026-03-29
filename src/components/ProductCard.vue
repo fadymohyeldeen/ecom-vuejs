@@ -1,17 +1,16 @@
 <template>
   <router-link
     :to="`/products/${product.id}`"
-    class="flex flex-col h-full bg-white no-underline group border border-gray-100 p-2 rounded-2xl"
+    class="flex flex-col h-full bg-white no-underline group border border-gray-100 p-3 rounded-2xl hover:shadow-sm transition-shadow"
   >
     <!-- Image Section -->
     <div
-      class="relative w-full pt-[100%] bg-[#F0F0F0] rounded-xl overflow-hidden mb-4"
+      class="relative w-full pt-[100%] bg-[#F0F0F0] rounded-xl overflow-hidden mb-3"
     >
       <img
-        :src="validImage"
+        :src="product.image"
         :alt="product.title"
-        @error="onImageError"
-        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
       />
     </div>
 
@@ -24,18 +23,18 @@
 
       <!-- Title -->
       <h3
-        class="text-[17px] sm:text-lg font-bold text-black leading-snug line-clamp-1 mb-1.5 capitalize"
+        class="text-sm font-semibold text-black leading-snug line-clamp-2 mb-2"
       >
         {{ product.title }}
       </h3>
 
       <!-- Rating -->
-      <div class="flex items-center gap-1.5 mb-2">
+      <div class="flex items-center gap-1 mb-3">
         <div class="flex items-center text-[#FFC633]">
           <svg
             v-for="i in 5"
             :key="i"
-            class="w-4 h-4"
+            class="w-3.5 h-3.5"
             :class="
               i <= Math.round(product.rating.rate)
                 ? 'fill-current'
@@ -48,25 +47,20 @@
             />
           </svg>
         </div>
-        <span class="text-sm text-black font-medium">
-          {{ product.rating.rate }}<span class="text-gray-400">/5</span>
-        </span>
+        <span class="text-xs text-gray-500">{{ product.rating.rate }}</span>
         <span class="text-xs text-gray-400">({{ product.rating.count }})</span>
       </div>
-
-      <!-- Price -->
-      <div class="flex items-center gap-3 mt-auto">
-        <span class="text-xl sm:text-2xl font-bold text-black">
-          ${{ product.price }}
-        </span>
-        <span class="text-xl sm:text-2xl font-bold text-gray-400 line-through">
-          ${{ Math.round(product.price * 1.3) }}
-        </span>
-        <span
-          class="text-xs font-bold text-[#FF3333] bg-[#FF3333]/10 px-3 py-1 rounded-full ml-auto md:ml-1"
+      <!-- Price + Add to Cart -->
+      <div class="mt-auto flex items-center justify-between pt-2">
+        <span class="md:text-xl font-bold text-black sm:text-sm"
+          >${{ product.price }}</span
         >
-          -30%
-        </span>
+        <button
+          @click.prevent="$emit('add-to-cart', product)"
+          class="text-xs font-medium px-2 py-1 sm:px-3 sm:py-1.5 rounded-full border border-black text-black hover:bg-black hover:text-white transition-colors whitespace-nowrap"
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   </router-link>
@@ -79,20 +73,6 @@ export default {
     product: {
       type: Object,
       required: true,
-    },
-  },
-  computed: {
-    validImage() {
-      const img = this.product?.image;
-      if (!img) {
-        return "https://placehold.co/400x400/F0F0F0/AAAAAA?text=No+Image";
-      }
-      return img;
-    },
-  },
-  methods: {
-    onImageError(e) {
-      e.target.src = "https://placehold.co/400x400/F0F0F0/AAAAAA?text=No+Image";
     },
   },
 };
